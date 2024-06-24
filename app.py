@@ -32,10 +32,16 @@ if __name__ == "__main__":
 app.config["SECRET_KEY"] = "my key"
 app.app_context()
 
+#-------------------- LOGIN ROUTES -----------------#
+#-------------------- LOGIN ROUTES -----------------#
+#-------------------- LOGIN ROUTES -----------------#
+#-------------------- LOGIN ROUTES -----------------#
+#-------------------- LOGIN ROUTES -----------------#
+#-------------------- LOGIN ROUTES -----------------#
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-
 
 class User(UserMixin):
     def __init__(self, email, name, password, isAdmin=False):
@@ -58,7 +64,6 @@ class User(UserMixin):
         user = cls(email, name, password, True)
         user.password_hash = password
         return user
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -89,7 +94,6 @@ def load_user(user_id):
             user_data[0], user_data[2].split(" ")[0].title(), user_data[1]
         )
     return None
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -142,7 +146,6 @@ def login():
 
     return render_template("login.html")
 
-
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -176,7 +179,6 @@ def register():
         return redirect(url_for("login"))
 
     return render_template("register.html")
-
 
 @app.route("/logout")
 @login_required
@@ -244,261 +246,19 @@ def profile():
         "profile.html", user_data=user_data, purchased_cars=purchased_cars
     )
 
+#-------------------- ADMIN ROUTES -----------------#
+#-------------------- ADMIN ROUTES -----------------#
+#-------------------- ADMIN ROUTES -----------------#
+#-------------------- ADMIN ROUTES -----------------#
+#-------------------- ADMIN ROUTES -----------------#
+#-------------------- ADMIN ROUTES -----------------#
+
 # Create a route decorator
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/addnewcar", methods=["GET", "POST"])
-@login_required
-def addNewCar():
-    if not current_user.isAdmin:
-        return redirect(url_for("index"))
-    
-    db = mysql.connector.connect(
-        host="localhost", user="root", password="Ahmad2003", database="carShowroom"
-    )
-    cursor = db.cursor()
-
-    form = vehicleForm()
-    if form.validate_on_submit():
-        options = [opt for opt in form.options.data if opt]
-
-        addVehicleToDataBase(
-            db=db,
-            cursor=cursor,
-            brand=form.brand.data,
-            numOfDoors=form.numOfDoors.data,
-            carColor=form.carColor.data,
-            carModel=form.carModel.data,
-            petrolType=form.petrolType.data,
-            numOfPass=form.numOfPass.data,
-            transmissionType=form.transmissionType.data,
-            manufactureYear=form.manufactureYear.data,
-            price=form.price.data,
-            options=options,
-            status=form.status.data,
-        )
-        flash("Vehicle added successfully!", "success")
-
-        db.commit()
-        cursor.close()
-        db.close()
-
-        return redirect(url_for("addNewCar"))
-    
-    return render_template("addNewCar.html", form=form)
-
-@app.route("/buycar", methods=["GET", "POST"])
-def buyCar():
-    db = mysql.connector.connect(
-        host="localhost", user="root", password="Ahmad2003", database="carShowroom"
-    )
-    cursor = db.cursor()
-
-    # Construct the query dynamically based on provided filters
-    conditions = ["v.STATUS = 'AVAILABLE'"]
-    parameters = []
-    brand = request.args.get("brand")
-    color = request.args.get("color")
-    petrol_type = request.args.get("petrol_type")
-    num_of_doors = request.args.get("num_of_doors")
-    transmission_type = request.args.get("transmission_type")
-    sort_by = request.args.get("sort_by", "vm.CAR_BRAND")
-    order = request.args.get("order", "ASC")
-
-    if brand:
-        conditions.append("vm.CAR_BRAND = %s")
-        parameters.append(brand)
-    if color:
-        conditions.append("vm.CAR_COLOR = %s")
-        parameters.append(color)
-    if petrol_type:
-        conditions.append("vm.PETROL_TYPE = %s")
-        parameters.append(petrol_type)
-    if num_of_doors:
-        conditions.append("vm.NUM_OF_DOORS = %s")
-        parameters.append(num_of_doors)
-    if transmission_type:
-        conditions.append("vm.TRANSMISSION_TYPE = %s")
-        parameters.append(transmission_type)
-
-    query = """
-    SELECT 
-        v.CAR_ID, vm.CAR_BRAND, vm.CAR_MODEL, vm.CAR_COLOR, vm.PETROL_TYPE, 
-        vm.NUM_OF_DOORS, vm.TRANSMISSION_TYPE, vm.MANUFACTURE_YEAR, vm.PRICE
-    FROM 
-        VEHICLES v
-    JOIN 
-        VEHICLE_MODELS vm ON v.MODEL_ID = vm.MODEL_ID
-    WHERE 
-        v.STATUS = 'AVAILABLE' AND
-        v.CAR_ID = (SELECT MAX(v2.CAR_ID) 
-                    FROM VEHICLES v2 
-                    WHERE v2.MODEL_ID = v.MODEL_ID AND v2.STATUS = 'AVAILABLE')
-    """
-    if conditions:
-        query += " AND " + " AND ".join(conditions)
-    query += f" ORDER BY {sort_by} {order}"
-
-    cursor.execute(query, parameters)
-    cars = cursor.fetchall()
-
-    cursor.execute("SELECT DISTINCT CAR_BRAND FROM VEHICLE_MODELS")
-    brands = [brand[0] for brand in cursor.fetchall()]
-    cursor.execute("SELECT DISTINCT CAR_COLOR FROM VEHICLE_MODELS")
-    colors = [color[0] for color in cursor.fetchall()]
-    cursor.execute("SELECT DISTINCT PETROL_TYPE FROM VEHICLE_MODELS")
-    petrol_types = [pt[0] for pt in cursor.fetchall()]
-    cursor.execute("SELECT DISTINCT TRANSMISSION_TYPE FROM VEHICLE_MODELS")
-    transmission_types = [tt[0] for tt in cursor.fetchall()]
-
-    cursor.close()
-    db.close()
-
-    # Pre-format image filenames
-    cars = [
-        {
-            "id": car[0],
-            "brand": car[1],
-            "model": car[2],
-            "color": car[3],
-            "petrol_type": car[4],
-            "num_of_doors": car[5],
-            "transmission_type": car[6],
-            "manufacture_year": car[7],
-            "price": car[8],
-            "image_filename": f"{car[1]}_{car[2]}_{car[7]}.jpg"
-        }
-        for car in cars
-    ]
-
-    return render_template(
-        "buyCar.html",
-        cars=cars,
-        brands=brands,
-        colors=colors,
-        petrol_types=petrol_types,
-        transmission_types=transmission_types,
-        selected_filters=request.args,
-    )
-
-
-@app.route("/car/<int:car_id>")
-def carDetails(car_id):
-    db = mysql.connector.connect(
-        host="localhost", user="root", password="Ahmad2003", database="carShowroom"
-    )
-    cursor = db.cursor()
-    cursor.execute(
-        """
-        SELECT v.CAR_ID, m.CAR_BRAND, m.CAR_MODEL, m.CAR_COLOR, m.PETROL_TYPE, m.NUM_OF_DOORS, 
-               m.TRANSMISSION_TYPE, m.MANUFACTURE_YEAR, m.PRICE, o.SUNROOF, o.HEATED_SEATS, 
-               o.GPS_NAVIGATION, o.BACKUP_CAMERA
-        FROM VEHICLES v
-        JOIN VEHICLE_MODELS m ON v.MODEL_ID = m.MODEL_ID
-        LEFT JOIN OPTIONS o ON m.OP_ID = o.OP_ID
-        WHERE v.CAR_ID = %s AND v.STATUS = 'AVAILABLE'
-        """, 
-        (car_id,)
-    )
-    car = cursor.fetchone()
-    if car:
-        car = {
-            "id": car[0],
-            "brand": car[1],
-            "model": car[2],
-            "color": car[3],
-            "petrol_type": car[4],
-            "num_of_doors": car[5],
-            "transmission_type": car[6],
-            "manufacture_year": car[7],
-            "price": car[8],
-            "sunroof": car[9],
-            "heated_seats": car[10],
-            "gps_navigation": car[11],
-            "backup_camera": car[12],
-            "image_filename": f"{car[1]}_{car[2]}_{car[7]}.jpg"
-        }
-    cursor.close()
-    db.close()
-
-    if car:
-        return render_template("carDetails.html", car=car)
-    else:
-        return render_template("404.html"), 404
-
-@app.route("/car/<int:car_id>/purchase", methods=["POST"])
-@login_required
-def purchaseCar(car_id):
-    if not current_user.is_authenticated:
-        flash("You need to log in to purchase a car.", "error")
-        return redirect(url_for("carDetails", car_id=car_id))
-
-    # Check if the user is an admin or employee
-    if current_user.isAdmin:
-        flash("Employees and admins cannot purchase cars.", "error")
-        return redirect(url_for("carDetails", car_id=car_id))
-
-    db = mysql.connector.connect(
-        host="localhost", user="root", password="Ahmad2003", database="carShowroom"
-    )
-    cursor = db.cursor()
-
-    user_email = current_user.id
-
-    # Ensure the user is a customer
-    cursor.execute("SELECT CUS_ID FROM CUSTOMERS WHERE EMAIL = %s", (user_email,))
-    result = cursor.fetchone()
-    if not result:
-        flash("Employees and admins cannot purchase cars.", "error")
-        cursor.close()
-        db.close()
-        return redirect(url_for("carDetails", car_id=car_id))
-
-    cus_id = result[0]
-
-    payment_method = request.form.get('payment_method')
-    if not payment_method:
-        flash("Payment method is required.", "error")
-        return redirect(url_for("carDetails", car_id=car_id))
-
-    # Update vehicle status to SOLD
-    cursor.execute("UPDATE VEHICLES SET STATUS='SOLD' WHERE CAR_ID=%s", (car_id,))
-
-    cursor.execute("SELECT m.PRICE FROM VEHICLES v JOIN VEHICLE_MODELS m ON v.MODEL_ID = m.MODEL_ID WHERE v.CAR_ID = %s", (car_id,))
-    car = cursor.fetchone()
-
-    DATE_OF_PURCHASE = datetime.datetime.today().strftime("%Y-%m-%d")
-
-    # Fetch a random EMP_ID from SALES_EMP
-    cursor.execute("SELECT se.EMP_ID FROM SALES_EMP se JOIN EMPLOYEE e ON se.EMP_ID = e.EMP_ID WHERE e.STATUS = 'CURRENT'")
-    sales_emp_ids = [item[0] for item in cursor.fetchall()]
-
-    if not sales_emp_ids:
-        flash("No sales employees found to complete the purchase.", "error")
-        db.rollback()
-        cursor.close()
-        db.close()
-        return redirect(url_for("carDetails", car_id=car_id))
-
-    emp_id = random.choice(sales_emp_ids)
-
-    cursor.execute(
-        "INSERT INTO SOLD_CARS (CAR_ID, DATE_OF_PURCHASE, CUS_ID, EMP_ID, PAYMENT_METHOD) VALUES (%s, %s, %s, %s, %s)",
-        (car_id, DATE_OF_PURCHASE, cus_id, emp_id, payment_method),
-    )
-
-    cursor.execute("DELETE FROM NON_SOLD_CARS WHERE CAR_ID=%s", (car_id,))
-
-    db.commit()
-    cursor.close()
-    db.close()
-
-    flash("Purchase successful!", "success")
-    return redirect(url_for("index"))
-    
-@app.route("/allcars", methods=["GET", "POST"])
+@app.route("/allcars", methods=["GET","POST"])
 @login_required
 def allCars():
     if not current_user.isAdmin:
@@ -542,13 +302,12 @@ def allCars():
         parameters.append(transmission_type)
 
     query = """
-    SELECT v.CAR_ID, vm.CAR_BRAND, vm.NUM_OF_DOORS, vm.CAR_COLOR, vm.CAR_MODEL, 
-           vm.PETROL_TYPE, vm.NUM_OF_PASS, vm.TRANSMISSION_TYPE, vm.MANUFACTURE_YEAR, 
-           vm.PRICE, v.STATUS, 
-           o.SUNROOF, o.HEATED_SEATS, o.GPS_NAVIGATION, o.BACKUP_CAMERA
+    SELECT v.CAR_ID, vm.CAR_BRAND, vm.CAR_MODEL, vm.CAR_COLOR, vm.PETROL_TYPE, 
+           vm.NUM_OF_DOORS, vm.NUM_OF_PASS, vm.TRANSMISSION_TYPE, vm.MANUFACTURE_YEAR, vm.PRICE, 
+           v.STATUS, o.SUNROOF, o.HEATED_SEATS, o.GPS_NAVIGATION, o.BACKUP_CAMERA
     FROM VEHICLES v
     JOIN VEHICLE_MODELS vm ON v.MODEL_ID = vm.MODEL_ID
-    LEFT JOIN OPTIONS o ON vm.OP_ID = o.OP_ID
+    JOIN OPTIONS o ON o.OP_ID = vm.OP_ID
     """
     if conditions:
         query += " WHERE " + " AND ".join(conditions)
@@ -607,7 +366,7 @@ def duplicate_car_route(car_id):
     flash("Car duplicated successfully!", "success")
     return redirect(url_for("allCars"))
 
-@app.route("/updatestatus/<int:car_id>/<string:action>")
+@app.route("/updatestatus/<int:car_id>/<string:action>", methods=["POST"])
 @login_required
 def updateCarStatus(car_id, action):
     if not current_user.isAdmin:
@@ -684,6 +443,53 @@ def soldCars():
     db.close()
 
     return render_template("soldCars.html", soldCars=soldCars)
+
+@app.route("/addnewcar", methods=["GET", "POST"])
+@login_required
+def addNewCar():
+    if not current_user.isAdmin:
+        return redirect(url_for("index"))
+    
+    db = mysql.connector.connect(
+        host="localhost", user="root", password="Ahmad2003", database="carShowroom"
+    )
+    cursor = db.cursor()
+
+    form = vehicleForm()
+    if form.validate_on_submit():
+        options = [opt for opt in form.options.data if opt]
+
+        addVehicleToDataBase(
+            db=db,
+            cursor=cursor,
+            brand=form.brand.data,
+            numOfDoors=form.numOfDoors.data,
+            carColor=form.carColor.data,
+            carModel=form.carModel.data,
+            petrolType=form.petrolType.data,
+            numOfPass=form.numOfPass.data,
+            transmissionType=form.transmissionType.data,
+            manufactureYear=form.manufactureYear.data,
+            price=form.price.data,
+            options=options,
+            status=form.status.data,
+        )
+        flash("Vehicle added successfully!", "success")
+
+        db.commit()
+        cursor.close()
+        db.close()
+
+        return redirect(url_for("addNewCar"))
+    
+    return render_template("addNewCar.html", form=form)
+
+#-------------------- ADMIN ROUTES FOR EMPLOYEES -----------------#
+#-------------------- ADMIN ROUTES FOR EMPLOYEES -----------------#
+#-------------------- ADMIN ROUTES FOR EMPLOYEES -----------------#
+#-------------------- ADMIN ROUTES FOR EMPLOYEES -----------------#
+#-------------------- ADMIN ROUTES FOR EMPLOYEES -----------------#
+#-------------------- ADMIN ROUTES FOR EMPLOYEES -----------------#
 
 @app.route("/employees")
 @login_required
@@ -790,8 +596,6 @@ def addEmployee():
 
     return render_template("addEmployee.html", today=today)
 
-
-
 @app.route("/updateemployeestatus/<int:emp_id>/<string:action>")
 @login_required
 def updateEmployeeStatus(emp_id, action):
@@ -892,13 +696,220 @@ def updateEmployee(emp_id):
             non_sales_employee=non_sales_employee
         )
 
+#-------------------- CUSTOMER ROUTES  -----------------#
+#-------------------- CUSTOMER ROUTES  -----------------#
+#-------------------- CUSTOMER ROUTES  -----------------#
+#-------------------- CUSTOMER ROUTES  -----------------#
+#-------------------- CUSTOMER ROUTES  -----------------#
+#-------------------- CUSTOMER ROUTES  -----------------#
+
+
+@app.route("/buycar", methods=["GET", "POST"])
+def buyCar():
+    db = mysql.connector.connect(
+        host="localhost", user="root", password="Ahmad2003", database="carShowroom"
+    )
+    cursor = db.cursor()
+
+    # Construct the query dynamically based on provided filters
+    conditions = []
+    parameters = []
+    brand = request.args.get("brand")
+    color = request.args.get("color")
+    petrol_type = request.args.get("petrol_type")
+    num_of_doors = request.args.get("num_of_doors")
+    transmission_type = request.args.get("transmission_type")
+    sort_by = request.args.get("sort_by", "vm.CAR_BRAND")
+    order = request.args.get("order", "ASC")
+
+    if brand:
+        conditions.append("vm.CAR_BRAND = %s")
+        parameters.append(brand)
+    if color:
+        conditions.append("vm.CAR_COLOR = %s")
+        parameters.append(color)
+    if petrol_type:
+        conditions.append("vm.PETROL_TYPE = %s")
+        parameters.append(petrol_type)
+    if num_of_doors:
+        conditions.append("vm.NUM_OF_DOORS = %s")
+        parameters.append(num_of_doors)
+    if transmission_type:
+        conditions.append("vm.TRANSMISSION_TYPE = %s")
+        parameters.append(transmission_type)
+
+    query = """
+    SELECT 
+        MIN(v.CAR_ID), vm.CAR_BRAND, vm.CAR_MODEL, vm.MANUFACTURE_YEAR, vm.PRICE
+    FROM 
+        VEHICLES v
+    JOIN 
+        VEHICLE_MODELS vm ON v.MODEL_ID = vm.MODEL_ID
+    WHERE 
+        v.STATUS = 'AVAILABLE'
+    """
+    if conditions:
+        query += " AND " + " AND ".join(conditions)
+    query += f" GROUP BY vm.CAR_BRAND, vm.CAR_MODEL, vm.MANUFACTURE_YEAR, vm.PRICE ORDER BY {sort_by} {order}"
+
+    cursor.execute(query, parameters)
+    cars = cursor.fetchall()
+
+    cursor.execute("SELECT DISTINCT CAR_BRAND FROM VEHICLE_MODELS")
+    brands = [brand[0] for brand in cursor.fetchall()]
+    cursor.execute("SELECT DISTINCT CAR_COLOR FROM VEHICLE_MODELS")
+    colors = [color[0] for color in cursor.fetchall()]
+    cursor.execute("SELECT DISTINCT PETROL_TYPE FROM VEHICLE_MODELS")
+    petrol_types = [pt[0] for pt in cursor.fetchall()]
+    cursor.execute("SELECT DISTINCT TRANSMISSION_TYPE FROM VEHICLE_MODELS")
+    transmission_types = [tt[0] for tt in cursor.fetchall()]
+
+    cursor.close()
+    db.close()
+
+    # Pre-format image filenames
+    cars = [
+        {
+            "id": car[0],
+            "brand": car[1],
+            "model": car[2],
+            "manufacture_year": car[3],
+            "price": car[4],
+            "image_filename": f"{car[1]}_{car[2]}_{car[3]}.jpg"
+        }
+        for car in cars
+    ]
+
+    return render_template(
+        "buyCar.html",
+        cars=cars,
+        brands=brands,
+        colors=colors,
+        petrol_types=petrol_types,
+        transmission_types=transmission_types,
+        selected_filters=request.args,
+    )
+
+@app.route("/car/<int:car_id>")
+def carDetails(car_id):
+    db = mysql.connector.connect(
+        host="localhost", user="root", password="Ahmad2003", database="carShowroom"
+    )
+    cursor = db.cursor()
+    cursor.execute(
+        """
+        SELECT v.CAR_ID, m.CAR_BRAND, m.CAR_MODEL, m.CAR_COLOR, m.PETROL_TYPE, m.NUM_OF_DOORS, 
+               m.TRANSMISSION_TYPE, m.MANUFACTURE_YEAR, m.PRICE, o.SUNROOF, o.HEATED_SEATS, 
+               o.GPS_NAVIGATION, o.BACKUP_CAMERA
+        FROM VEHICLES v
+        JOIN VEHICLE_MODELS m ON v.MODEL_ID = m.MODEL_ID
+        JOIN OPTIONS o ON m.OP_ID = o.OP_ID
+        WHERE v.CAR_ID = %s AND v.STATUS = 'AVAILABLE'
+        """, 
+        (car_id,)
+    )
+    car = cursor.fetchone()
+    if car:
+        car = {
+            "id": car[0],
+            "brand": car[1],
+            "model": car[2],
+            "color": car[3],
+            "petrol_type": car[4],
+            "num_of_doors": car[5],
+            "transmission_type": car[6],
+            "manufacture_year": car[7],
+            "price": car[8],
+            "sunroof": car[9],
+            "heated_seats": car[10],
+            "gps_navigation": car[11],
+            "backup_camera": car[12],
+            "image_filename": f"{car[1]}_{car[2]}_{car[7]}.jpg"
+        }
+    cursor.close()
+    db.close()
+
+    if car:
+        return render_template("carDetails.html", car=car)
+    else:
+        return render_template("404.html"), 404
+
+@app.route("/car/<int:car_id>/purchase", methods=["POST"])
+@login_required
+def purchaseCar(car_id):
+    if not current_user.is_authenticated:
+        flash("You need to log in to purchase a car.", "error")
+        return redirect(url_for("carDetails", car_id=car_id))
+
+    # Check if the user is an admin or employee
+    if current_user.isAdmin:
+        flash("Employees and admins cannot purchase cars.", "error")
+        return redirect(url_for("carDetails", car_id=car_id))
+
+    db = mysql.connector.connect(
+        host="localhost", user="root", password="Ahmad2003", database="carShowroom"
+    )
+    cursor = db.cursor()
+
+    user_email = current_user.id
+
+    # Ensure the user is a customer
+    cursor.execute("SELECT CUS_ID FROM CUSTOMERS WHERE EMAIL = %s", (user_email,))
+    result = cursor.fetchone()
+    if not result:
+        flash("Employees and admins cannot purchase cars.", "error")
+        cursor.close()
+        db.close()
+        return redirect(url_for("carDetails", car_id=car_id))
+
+    cus_id = result[0]
+
+    payment_method = request.form.get('payment_method')
+    if not payment_method:
+        flash("Payment method is required.", "error")
+        return redirect(url_for("carDetails", car_id=car_id))
+
+    # Update vehicle status to SOLD
+    cursor.execute("UPDATE VEHICLES SET STATUS='SOLD' WHERE CAR_ID=%s", (car_id,))
+
+    cursor.execute("SELECT m.PRICE FROM VEHICLES v JOIN VEHICLE_MODELS m ON v.MODEL_ID = m.MODEL_ID WHERE v.CAR_ID = %s", (car_id,))
+    car = cursor.fetchone()
+
+    DATE_OF_PURCHASE = datetime.datetime.today().strftime("%Y-%m-%d")
+
+    # Fetch a random EMP_ID from SALES_EMP
+    cursor.execute("SELECT se.EMP_ID FROM SALES_EMP se JOIN EMPLOYEE e ON se.EMP_ID = e.EMP_ID WHERE e.STATUS = 'CURRENT'")
+    sales_emp_ids = [item[0] for item in cursor.fetchall()]
+
+    if not sales_emp_ids:
+        flash("No sales employees found to complete the purchase.", "error")
+        db.rollback()
+        cursor.close()
+        db.close()
+        return redirect(url_for("carDetails", car_id=car_id))
+
+    emp_id = random.choice(sales_emp_ids)
+
+    cursor.execute(
+        "INSERT INTO SOLD_CARS (CAR_ID, DATE_OF_PURCHASE, CUS_ID, EMP_ID, PAYMENT_METHOD) VALUES (%s, %s, %s, %s, %s)",
+        (car_id, DATE_OF_PURCHASE, cus_id, emp_id, payment_method),
+    )
+
+    cursor.execute("DELETE FROM NON_SOLD_CARS WHERE CAR_ID=%s", (car_id,))
+
+    db.commit()
+    cursor.close()
+    db.close()
+
+    flash("Purchase successful!", "success")
+    return redirect(url_for("index"))
+
 # Create custom error pages
 
 # Invalid URL
 @app.errorhandler(404)
 def pageNotFound(e):
     return render_template("404.html"), 404
-
 
 # Internal Server URL
 @app.errorhandler(500)
@@ -944,7 +955,9 @@ def addVehicleToDataBase(
             options_dict['Backup camera']
         ),
     )
-    result = cursor.fetchone()
+    result = cursor.fetchall()
+    if result:
+        result = result[0]
     
     if result:
         op_id = result[0]
@@ -964,30 +977,41 @@ def addVehicleToDataBase(
         )
         op_id = cursor.lastrowid
 
-    # Insert into VEHICLES table
+    # Insert into VEHICLE_MODELS table
     cursor.execute(
         """
-        INSERT INTO VEHICLES (
-            CAR_BRAND, NUM_OF_DOORS, CAR_COLOR, CAR_MODEL, PETROL_TYPE, 
-            NUM_OF_PASS, TRANSMISSION_TYPE, MANUFACTURE_YEAR, PRICE, 
-            OP_ID, STATUS
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO VEHICLE_MODELS (
+            CAR_BRAND, CAR_MODEL, NUM_OF_DOORS, CAR_COLOR, PETROL_TYPE, 
+            NUM_OF_PASS, TRANSMISSION_TYPE, MANUFACTURE_YEAR, PRICE, OP_ID
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """,
         (
             brand,
+            carModel,
             numOfDoors,
             carColor,
-            carModel,
             petrolType,
             numOfPass,
             transmissionType,
             manufactureYear,
             price,
             op_id,
+        ),
+    )
+    model_id = cursor.lastrowid
+
+    # Insert into VEHICLES table
+    cursor.execute(
+        """
+        INSERT INTO VEHICLES (
+            MODEL_ID, STATUS
+        ) VALUES (%s, %s)
+        """,
+        (
+            model_id,
             status,
         ),
     )
-    # Get the ID of the newly inserted vehicle
     car_id = cursor.lastrowid
 
     # Fetch a random EMP_ID from SALES_EMP
@@ -1004,7 +1028,6 @@ def addVehicleToDataBase(
         )
 
     db.commit()
-
 
 # Create a form class
 class vehicleForm(FlaskForm):

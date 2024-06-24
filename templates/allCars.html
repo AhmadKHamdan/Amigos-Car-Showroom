@@ -92,6 +92,7 @@
                             <th>Color</th>
                             <th>Petrol Type</th>
                             <th>Number of Doors</th>
+                            <th>Number of Passengers</th>
                             <th>Transmission Type</th>
                             <th>Manufacture Year</th>
                             <th>Price</th>
@@ -105,10 +106,11 @@
                         <tr>
                             <!-- <td>{{ car[0] }}</td> -->
                             <td>{{ car[1] }}</td>
-                            <td>{{ car[4] }}</td>
-                            <td>{{ car[3] }}</td>
-                            <td>{{ car[5] }}</td>
                             <td>{{ car[2] }}</td>
+                            <td>{{ car[3] }}</td>
+                            <td>{{ car[4] }}</td>
+                            <td>{{ car[5] }}</td>
+                            <td>{{ car[6] }}</td>
                             <td>{{ car[7] }}</td>
                             <td>{{ car[8] }}</td>
                             <td>{{ car[9] }}</td>
@@ -126,14 +128,27 @@
                             </td>
                             <td>{{ car[10] }}</td>
                             <td>
-                                {% if car[10] == 'AVAILABLE' %}
-                                <a class="btn btn-delete" href="{{ url_for('updateCarStatus', car_id=car[0], action='delete') }}" onclick="return confirm('Are you sure you want to mark this car as not available?');">Delete</a>
-                                {% elif car[10] == 'NOT-AVAILABLE' %}
-                                <a class="btn btn-delete" href="{{ url_for('updateCarStatus', car_id=car[0], action='retrieve') }}" onclick="return confirm('Are you sure you want to mark this car as available?');">Retrieve</a>
-                                {% endif %}
-                                <form action="{{ url_for('duplicate_car_route', car_id=car[0]) }}" method="post"">
-                                    <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to duplicate this car?');">Duplicate</button>
-                                </form>
+                                <div class="button-group">
+                                    {% if car[10] == 'AVAILABLE' %}
+                                    <form action="{{ url_for('updateCarStatus', car_id=car[0], action='delete') }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to mark this car as not available?');">Delete</button>
+                                    </form>
+                                    <form action="{{ url_for('duplicate_car_route', car_id=car[0]) }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to duplicate this car?');">Duplicate</button>
+                                    </form>
+                                    {% elif car[10] == 'NOT-AVAILABLE' %}
+                                    <form action="{{ url_for('updateCarStatus', car_id=car[0], action='retrieve') }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to mark this car as available?');">Retrieve</button>
+                                    </form>
+                                    <form action="{{ url_for('duplicate_car_route', car_id=car[0]) }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to duplicate this car?');">Duplicate</button>
+                                    </form>
+                                    {% elif car[10] == 'SOLD' %}
+                                    <form action="{{ url_for('duplicate_car_route', car_id=car[0]) }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-extended" onclick="return confirm('Are you sure you want to duplicate this car?');">Duplicate</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
                             </td>
                         </tr>
                         {% endfor %}

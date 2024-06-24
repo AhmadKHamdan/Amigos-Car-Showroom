@@ -73,6 +73,11 @@ h3, h2 {
     margin-bottom: 20px;
 }
 
+.button-group {
+    display: flex;
+    gap: 5px;
+}
+
 .btn-primary:hover,
 .btn-secondary:hover,
 .btn-delete:hover {
@@ -89,6 +94,20 @@ h3, h2 {
     transition: background-color 0.3s;
     flex-grow: 1;
     text-align: center;
+}
+
+.btn-extended {
+    background-color: #4e4e4e;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    padding: 10px 61px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%; /* Extend to full width */
 }
 
 .btn:hover {
