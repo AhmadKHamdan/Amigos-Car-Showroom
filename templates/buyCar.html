@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Cars</title>
+    <link rel="icon" href="../static/images/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buyCar.css') }}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <h1>Available Cars</h1>
+        
+        <!-- Filtering Section -->
+        <div class="filter-section">
+            <h3>Filter Cars</h3>
+            <form method="get" action="">
+                <div class="form-group">
+                    <label for="brand">Brand:</label>
+                    <select class="form-control" id="brand" name="brand" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        {% for b in brands %}
+                        <option value="{{ b }}" {{ 'selected' if selected_filters.get('brand') == b else '' }}>{{ b }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="color">Color:</label>
+                    <select class="form-control" id="color" name="color" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        {% for c in colors %}
+                        <option value="{{ c }}" {{ 'selected' if selected_filters.get('color') == c else '' }}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="petrol_type">Petrol Type:</label>
+                    <select class="form-control" id="petrol_type" name="petrol_type" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        {% for pt in petrol_types %}
+                        <option value="{{ pt }}" {{ 'selected' if selected_filters.get('petrol_type') == pt else '' }}>{{ pt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="num_of_doors">Number of Doors:</label>
+                    <select class="form-control" id="num_of_doors" name="num_of_doors" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        {% for nd in [2, 4] %}
+                        <option value="{{ nd }}" {{ 'selected' if selected_filters.get('num_of_doors') == nd else '' }}>{{ nd }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transmission_type">Transmission Type:</label>
+                    <select class="form-control" id="transmission_type" name="transmission_type" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        {% for tt in transmission_types %}
+                        <option value="{{ tt }}" {{ 'selected' if selected_filters.get('transmission_type') == tt else '' }}>{{ tt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sort_by">Sort by:</label>
+                    <select name="sort_by" id="sort_by" class="form-control" onchange="this.form.submit()">
+                        <option value="CAR_BRAND" {{ 'selected' if request.args.get('sort_by') == 'CAR_BRAND' else '' }}>Brand</option>
+                        <option value="MANUFACTURE_YEAR" {{ 'selected' if request.args.get('sort_by') == 'MANUFACTURE_YEAR' else '' }}>Year</option>
+                        <option value="PRICE" {{ 'selected' if request.args.get('sort_by') == 'PRICE' else '' }}>Price</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="order">Order:</label>
+                    <select name="order" id="order" class="form-control" onchange="this.form.submit()">
+                        <option value="ASC" {{ 'selected' if request.args.get('order') == 'ASC' else '' }}>Ascending</option>
+                        <option value="DESC" {{ 'selected' if request.args.get('order') == 'DESC' else '' }}>Descending</option>
+                    </select>
+                </div>
+                <div class="form-group text-center">
+                    <a href="/buycar" class="btn btn-secondary">Clear</a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="car-grid">
+            {% for car in cars %}
+            <a class="car-item" href="{{ url_for('carDetails', car_id=car['id']) }}">
+                <img src="{{ url_for('static', filename='images/car_images/' + car['image_filename']) }}" alt="{{ car['model'] }}" />
+                <div class="car-info">
+                    <div class="car-brand">{{ car['brand'] }}</div>
+                    <div class="car-model">{{ car['model'] }}</div>
+                    <div class="car-year">{{ car['manufacture_year'] }}</div>
+                    <div class="car-price">₪ {{ car['price'] }}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

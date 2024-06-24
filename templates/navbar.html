@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amigos Motors</title>
+<link rel="icon" href="../static/images/logo.png">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+<script src="{{ url_for('static', filename='js/nav.js') }}" defer></script>
+</head>
+
+
+<div class="navbar-container">
+    <nav class="navbar">
+        <div class="nav-adjust">
+            <a class="navbar-brand logo" href="{{ url_for('index') }}">
+                <img src="../static/images/logo.png" alt="logo" width="150px">
+            </a>
+            <div class="collapse navbar-collapse" id="navbarMenu">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}" style="--i:1">Home</a>
+                    </li>
+                    {% if current_user.is_authenticated and current_user.isAdmin %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('allCars') }}" style="--i:2">Cars</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('soldCars') }}" style="--i:3">Sold Cars</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('addNewCar') }}" style="--i:4">Add a Vehicle</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('viewEmployees') }}" style="--i:5">Employees</a></li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('buyCar') }}" style="--i:2">Buy a Car</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#Contact" style="--i:3">Contact</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="buttons">
+                {% if current_user.is_authenticated %}
+                {% if current_user.isAdmin %}
+                <a style="--i:1">{{ current_user.name }}</a>
+                {% else %}
+                <a href="{{ url_for('profile') }}" style="--i:1">{{ current_user.name }}</a> 
+                {% endif %}
+                <a href="{{ url_for('logout') }}" style="--i:2">Logout</a>
+                {% else %}
+                <a class="login" href="{{ url_for('login') }}" style="--i:1">Log in</a>
+                <a class="register" href="{{ url_for('register') }}" style="--i:2">Register</a>
+                {% endif %}
+            </div>
+            <button class="navbar-toggler" type="button" id="menuToggle">
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+</div>
+
+</html>

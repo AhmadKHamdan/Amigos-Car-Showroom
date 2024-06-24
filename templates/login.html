@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/login.css') }}"
+    />
+    <title>Amigos Motors - Login</title>
+    <link rel="icon" href="../static/images/logo.png">
+  </head>
+  <body>
+    <div class="login">
+      <form action="{{ url_for('login') }}" method="POST" class="login__form">
+        <h1 class="login__title">Login</h1>
+
+        {% for message in get_flashed_messages(with_categories=true) %}
+        <div class="alert alert-{{ message[0] }}">
+          {{ message[1] }}
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        {% endfor %}
+        <br />
+        <div class="login__content">
+          <div class="login__box">
+            <i class="ri-mail-line login__icon"></i>
+            <div class="login__box-input">
+              <input
+                type="email"
+                required
+                class="login__input"
+                id="login-email"
+                name="email"
+                placeholder=" "
+              />
+              <label for="login-email" class="login__label">Email</label>
+            </div>
+          </div>
+          <div class="login__box">
+            <i class="ri-lock-2-line login__icon"></i>
+            <div class="login__box-input">
+              <input
+                type="password"
+                required
+                class="login__input"
+                id="login-pass"
+                name="password"
+                placeholder=" "
+              />
+              <label for="login-pass" class="login__label">Password</label>
+              <i class="ri-eye-off-line login__eye" id="login-eye"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="login__check">
+          <div class="login__check-group">
+            <input
+              type="checkbox"
+              class="login__check-input"
+              id="login-check"
+            />
+            <label for="login-check" class="login__check-label"
+              >Remember me</label
+            >
+          </div>
+          <a href="#" class="login__forgot">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="login__button">Login</button>
+
+        <p class="login__register">
+          Don't have an account?
+          <a href="{{ url_for('register') }}">Register</a>
+        </p>
+        <br/>
+        <p class="login__register">
+          <a href="{{ url_for('index') }}">Return To The Home Page</a>
+        </p>
+      </form>
+    </div>
+    <script>
+      document
+        .getElementById("login-eye")
+        .addEventListener("click", function (e) {
+          const passwordInput = document.getElementById("login-pass");
+          if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            this.classList.remove("ri-eye-off-line");
+            this.classList.add("ri-eye-line");
+          } else {
+            passwordInput.type = "password";
+            this.classList.remove("ri-eye-line");
+            this.classList.add("ri-eye-off-line");
+          }
+        });
+    </script>
+  </body>
+</html>

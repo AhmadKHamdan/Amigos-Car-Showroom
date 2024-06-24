@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Montserrat&family=Poppins&family=Roboto&family=Shadows+Into+Light&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-image: url('../images/employees/3.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    margin-top: 100px;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    border: 2px solid white;
+}
+
+h2:last-of-type {
+    margin-top: 50px;
+}
+
+.main-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-title h2 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.employee-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.employee-card {
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 20px);
+    box-sizing: border-box;
+}
+
+.employee-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.employee-info:last-child {
+    border-bottom: none;
+}
+
+.employee-info .label {
+    font-weight: 600;
+    color: #555;
+}
+
+.btns {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #4e4e4e;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex-grow: 1; 
+    text-align: center; 
+}
+
+.btn:hover {
+    background-color: #868686;
+}
+
+@media (max-width: 1090px) {
+    .employee-card {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 760px) {
+    .employee-card {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 576px) {
+    .employee-card {
+        width: calc(100% - 20px);
+    }
+
+    h2 {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .btn:nth-last-of-type(2), 
+    .btn:nth-last-of-type(1) {
+        display: none; 
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 1060px) {
+    .main-title {
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+}

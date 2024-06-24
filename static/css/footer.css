@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Montserrat&family=Poppins&family=Roboto&family=Shadows+Into+Light&display=swap');
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+footer {
+    width: 100%;
+    height: auto;
+    background-color: gray;
+    margin-top: 113px;
+    color: white;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+footer .footer-container {
+    padding-top: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    /*text-align: center;*/
+    padding-bottom: 50px;
+    border-bottom: 1px solid #f1f1f3;
+    list-style: none;
+    width: calc(100% - 420px);
+    margin: 0 auto;
+}
+
+footer .left-side {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-self: flex-start;
+    flex-grow: 1;
+}
+
+footer .left-side .logo {
+    display: flex;
+    width: 70px;
+    height: auto;
+    padding: 0px;
+    background-color: #f1f1f3   ;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+}
+
+footer .left-side .contact-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+footer .left-side .row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+}
+
+footer .right-side {
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-left: 50px;
+    gap: 30px 80px;
+    margin-top: 20px;
+}
+
+footer .right-side ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+footer .right-side ul .bold {
+    font-weight: 700;
+    padding-bottom: 14px;
+}
+
+footer .right-side .socials {
+    display: flex;
+    gap: 14px;
+}
+
+footer .right-side svg {
+    width: 52px;
+    height: 52px;
+    padding: 14px;
+    background-color: #f1f1f3;
+    border-radius: 8px;
+    border: 1px solid var(--White-95, #f1f1f3);
+}
+
+footer .copy-rights {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    padding-bottom: 30px;
+}
+
+@media screen and (max-width: 1440px) {
+footer {
+    margin-top: 136px;
+}
+
+footer .footer-container {
+    padding-top: 60px;
+    padding-bottom: 30px;
+}
+
+footer .left-side {
+    gap: 30px;
+}
+
+footer .left-side svg {
+    width: 44px;
+    height: 44px;
+    padding: 5.7px;
+}
+
+footer .left-side .contact-column {
+    gap: 14px;
+}
+
+footer .right-side ul .bold {
+    padding-bottom: 10px;
+}
+
+footer .right-side svg {
+    width: 44px;
+    height: 44px;
+    padding: 12px;
+    background-color: #f1f1f3;
+}
+
+footer .copy-rights {
+    margin-top: 30px;
+    padding-bottom: 20px;
+}
+}
+
+
+@media screen and (max-width: 900px) {
+footer .footer-container {
+    max-width: 80%;
+    margin: auto;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: 100px;
+    font-size: small;
+}
+
+footer .footer-container {
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+footer .left-side .contact-column {
+    gap: 12px;
+}
+
+footer .copy-rights {
+    margin-top: 20px;
+    padding-bottom: 24px;
+}
+}
+
+@media screen and (max-width: 850px) {
+    footer .left-side {
+        width: 20%;
+        justify-content: center;
+    }
+
+    footer .right-side {
+        width: 53%;
+        margin-left: 20px;
+        gap: 20px 20px;
+    }
+}
+
+@media screen and (max-width: 721px) {
+    footer .right-side {
+        width: 83%;
+    }
+    footer .left-side .logo {
+        width: 50px;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    footer .footer-container {
+        max-width: 100%;
+        padding: 0 20px;
+        margin: 0 auto;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    footer .left-side {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    footer .right-side {
+        width: 100%;
+        justify-content: center;
+        gap: 20px;
+        margin-left: 0;
+    }
+    
+    footer .right-side ul {
+        align-items: center;
+    }
+    
+    footer .left-side .logo {
+        margin-top: 10px;
+        width: 80px;
+        margin-bottom: 10px;
+    }
+    
+    footer .left-side .contact-column {
+        align-items: center;
+        gap: 10px;
+    }
+    
+    footer .left-side .row {
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    footer .copy-rights {
+        margin-top: 20px;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+    }

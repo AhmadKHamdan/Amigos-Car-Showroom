@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Montserrat&family=Poppins&family=Roboto&family=Shadows+Into+Light&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+    margin-top: 120px;
+}
+
+.container-fluid {
+    padding: 20px;
+    width: calc(100% - 200px);
+    margin: auto;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+    text-align: left;
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.table th {
+    background-color: #f4f4f4;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+}
+
+.table td {
+    border-bottom: 1px solid #ddd;
+    color: #555;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+@media (max-width: 992px) {
+    .container-fluid {
+        width: calc(100% - 100px);
+    }
+
+    .table th,
+    .table td {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container-fluid {
+        width: calc(100% - 50px);
+    }
+
+    .table th,
+    .table td {
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container-fluid {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .table th,
+    .table td {
+        padding: 6px;
+        font-size: 0.875rem;
+    }
+
+    h1 {
+        font-size: 1.25rem;
+    }
+}

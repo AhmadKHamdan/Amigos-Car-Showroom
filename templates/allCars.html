@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Cars</title>
+    <link rel="icon" href="../static/images/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/allCars.css') }}">
+</head>
+{% include 'navbar.html' %}
+<body>
+    <div class="container-fluid mt-4">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+
+        <div class="filter-section">
+            <h3>Filter Cars</h3>
+            <form method="get" action="">
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <select class="form-control" id="status" name="status" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        <option value="AVAILABLE" {{ 'selected' if selected_filters.get('status') == 'AVAILABLE' else '' }}>Available</option>
+                        <option value="SOLD" {{ 'selected' if selected_filters.get('status') == 'SOLD' else '' }}>Sold</option>
+                        <option value="NOT-AVAILABLE" {{ 'selected' if selected_filters.get('status') == 'NOT-AVAILABLE' else '' }}>Not Available</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="brand">Brand:</label>
+                    <select class="form-control" id="brand" name="brand" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        {% for b in brands %}
+                        <option value="{{ b }}" {{ 'selected' if selected_filters.get('brand') == b else '' }}>{{ b }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="color">Color:</label>
+                    <select class="form-control" id="color" name="color" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        {% for c in colors %}
+                        <option value="{{ c }}" {{ 'selected' if selected_filters.get('color') == c else '' }}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="petrol_type">Petrol Type:</label>
+                    <select class="form-control" id="petrol_type" name="petrol_type" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        {% for pt in petrol_types %}
+                        <option value="{{ pt }}" {{ 'selected' if selected_filters.get('petrol_type') == pt else '' }}>{{ pt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="num_of_doors">Number of Doors:</label>
+                    <select class="form-control" id="num_of_doors" name="num_of_doors" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        {% for nd in [2, 4] %}
+                        <option value="{{ nd }}" {{ 'selected' if selected_filters.get('num_of_doors') == nd else '' }}>{{ nd }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transmission_type">Transmission Type:</label>
+                    <select class="form-control" id="transmission_type" name="transmission_type" onchange="this.form.submit()">
+                        <option value="">Any</option>
+                        {% for tt in transmission_types %}
+                        <option value="{{ tt }}" {{ 'selected' if selected_filters.get('transmission_type') == tt else '' }}>{{ tt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group text-center">
+                    <a href="/allcars" class="btn btn-secondary">Clear</a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="cars-section">
+            <h2>Our Cars</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <!-- <th>ID</th> -->
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Color</th>
+                            <th>Petrol Type</th>
+                            <th>Number of Doors</th>
+                            <th>Transmission Type</th>
+                            <th>Manufacture Year</th>
+                            <th>Price</th>
+                            <th>Options</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for car in cars %}
+                        <tr>
+                            <!-- <td>{{ car[0] }}</td> -->
+                            <td>{{ car[1] }}</td>
+                            <td>{{ car[4] }}</td>
+                            <td>{{ car[3] }}</td>
+                            <td>{{ car[5] }}</td>
+                            <td>{{ car[2] }}</td>
+                            <td>{{ car[7] }}</td>
+                            <td>{{ car[8] }}</td>
+                            <td>{{ car[9] }}</td>
+                            <td>
+                                {% if car[11]  or car[12] or car[13] or car[14] %}
+                                    {% set options = [] %}
+                                    {% if car[11] %} {% set options = options + ['Sunroof'] %} {% endif %}
+                                    {% if car[12] %} {% set options = options + ['Heated Seats'] %} {% endif %}
+                                    {% if car[13] %} {% set options = options + ['GPS Navigation'] %} {% endif %}
+                                    {% if car[14] %} {% set options = options + ['Backup Camera'] %} {% endif %}
+                                    {{ options|join(', ') }}
+                                {% else %}
+                                    No Options
+                                {% endif %}
+                            </td>
+                            <td>{{ car[10] }}</td>
+                            <td>
+                                {% if car[10] == 'AVAILABLE' %}
+                                <a class="btn btn-delete" href="{{ url_for('updateCarStatus', car_id=car[0], action='delete') }}" onclick="return confirm('Are you sure you want to mark this car as not available?');">Delete</a>
+                                {% elif car[10] == 'NOT-AVAILABLE' %}
+                                <a class="btn btn-delete" href="{{ url_for('updateCarStatus', car_id=car[0], action='retrieve') }}" onclick="return confirm('Are you sure you want to mark this car as available?');">Retrieve</a>
+                                {% endif %}
+                                <form action="{{ url_for('duplicate_car_route', car_id=car[0]) }}" method="post"">
+                                    <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to duplicate this car?');">Duplicate</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

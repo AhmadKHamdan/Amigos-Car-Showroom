@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Montserrat&family=Poppins&family=Roboto&family=Shadows+Into+Light&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+    margin-top: 90px;
+}
+
+.container-fluid {
+    padding: 20px;
+}
+
+.container {
+    max-width: calc(100% - 200px);
+    margin: auto;
+    padding: 20px;
+}
+
+.profile-section, .cars-section {
+    background-color: rgba(255, 255, 255, 0.9); 
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+h3, h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.alert {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease;
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.form-control:focus {
+    border-color: #4e4e4e;
+    box-shadow: 0 0 5px rgba(78, 78, 78, 0.25);
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #4e4e4e;
+    border-color: #4e4e4e;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    background-color: #868686;
+    border-color: #868686;
+}
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto; /* Allow horizontal scrolling */
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+    text-align: left;
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.table th {
+    background-color: #f4f4f4;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+}
+
+.table td {
+    border-bottom: 1px solid #ddd;
+    color: #555;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+@media (max-width: 992px) {
+    .container {
+        width: calc(100% - 100px);
+    }
+
+    .form-group label,
+    .btn-primary {
+        font-size: 0.875rem;
+    }
+
+    .form-control {
+        padding: 8px;
+    }
+
+    .table th,
+    .table td {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: calc(100% - 50px);
+    }
+
+    .form-group label,
+    .btn-primary {
+        font-size: 0.75rem;
+    }
+
+    .form-control {
+        padding: 6px;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px;
+    }
+
+    h2, h3 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .table th,
+    .table td {
+        padding: 6px;
+        font-size: 0.875rem;
+    }
+
+    .form-group label,
+    .btn-primary {
+        font-size: 0.75rem;
+    }
+
+    .form-control {
+        padding: 4px;
+    }
+
+    h2, h3 {
+        font-size: 1.25rem;
+    }
+
+    .btn-primary {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+.profile-section {
+    max-width: 300px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.cars-section {
+    margin-top: 20px;
+}

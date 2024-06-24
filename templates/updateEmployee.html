@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Employee</title>
+    <link rel="icon" href="../static/images/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/updateEmployee.css') }}">
+</head>
+<body>
+  {% include 'navbar.html' %}
+  <div class="container">
+    <h2>Update Employee</h2>
+    <form method="post" class="form">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" name="name" id="name" value="{{ employee[1] }}" required />
+      </div>
+      <div class="form-group">
+        <label for="address">Address:</label>
+        <input type="text" class="form-control" name="address" id="address" value="{{ employee[2] }}" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="text" class="form-control" name="phone" id="phone" value="{{ employee[3] }}" required />
+      </div>
+      <div class="form-group">
+        <label for="dob">Date of Birth:</label>
+        <input type="date" class="form-control" name="dob" id="dob" value="{{ employee[4] }}" required />
+      </div>
+      <div class="form-group">
+        <label for="start_date">Start Date:</label>
+        <input type="date" class="form-control" name="start_date" id="start_date" value="{{ employee[5] }}" required />
+      </div>
+      <div class="form-group">
+        <label for="salary">Salary:</label>
+        <input type="number" class="form-control" name="salary" id="salary" step="100" value="{{ employee[6] }}" required />
+      </div>
+
+      {% if sales_employee %}
+      <div class="form-group">
+        <label for="commission_rate">Commission Rate:</label>
+        <input type="number" class="form-control" name="commission_rate" id="commission_rate" step="0.01" value="{{ sales_employee[1] }}" required />
+      </div>
+      <input type="hidden" name="emp_type" value="sales" />
+      {% elif non_sales_employee %}
+      <div class="form-group">
+        <label for="serviceType" class="form-control-label">Service Type</label>
+        <select id="serviceType" name="service_type" class="form-control" required>
+            <option value="Detailing" {% if non_sales_employee[1] == "Detailing" %}selected{% endif %}>Detailing</option>
+            <option value="Repairs" {% if non_sales_employee[1] == "Repairs" %}selected{% endif %}>Repairs</option>
+            <option value="Maintenance" {% if non_sales_employee[1] == "Maintenance" %}selected{% endif %}>Maintenance</option>
+            <option value="Customer Support" {% if non_sales_employee[1] == "Customer Support" %}selected{% endif %}>Customer Support</option>
+        </select>
+      </div>
+      <input type="hidden" name="emp_type" value="non_sales" />
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary">Update Employee</button>
+    </form>
+  </div>
+  {% include 'footer.html' %}
+</body>
+</html>

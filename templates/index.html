@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigos Motors</title>
+    <link rel="icon" href="../static/images/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <header>
+        <div class="header-container">
+            <div class="header-left">
+                <h1>UNLOCK PURE LUXURY!</h1>
+                <h3>Elegance..</h3>
+                <p>
+                    At our Car Showroom, we understand that the quest for the perfect vehicle is about more than just a means of transportation; it’s about an expression of your lifestyle and aspirations. Dive into our exclusive collection where every car promises not only superb handling and aesthetics but also unparalleled luxury and innovation. Let us help you discover the car that not only meets your needs but exceeds your expectations in every possible way.
+                </p>
+                <a href="{{ url_for('buyCar') }}" class="btn">Explore Cars</a>
+            </div>
+            <div class="header-right">
+                <div class="sq-box">
+                    <img src="../static/images/car-home.png" alt="car">
+                </div>
+            </div>
+        </div>
+        <div class="sq-box2"></div>
+    </header>
+
+    {% include 'footer.html' %}
+
+</body>
+</html>

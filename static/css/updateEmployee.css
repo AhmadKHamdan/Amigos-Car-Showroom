@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 130px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+}
+
+.alert {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+    font-size: 16px; 
+}
+
+.form-control:focus {
+    border-color: #4e4e4e; 
+    outline: 0;
+    box-shadow: 0 0 5px rgba(78, 78, 78, 0.25);
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #4e4e4e;
+    border-color: #4e4e4e;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    font-size: 16px; 
+}
+
+.btn-primary:hover {
+    background-color: #868686;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .form-control {
+        padding: 8px;
+        font-size: 14px; 
+    }
+
+    .btn-primary {
+        padding: 8px 15px;
+        font-size: 14px; 
+    }
+}
+
+@media (max-width: 650px) {
+    .container {
+        padding: 10px;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    .form-control {
+        padding: 7px;
+        font-size: 13px; 
+    }
+
+    .btn-primary {
+        padding: 7px 12px;
+        font-size: 13px; 
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 10px;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    .form-control {
+        padding: 6px;
+        font-size: 12px; 
+    }
+
+    .btn-primary {
+        padding: 6px 10px;
+        font-size: 12px; 
+    }
+}

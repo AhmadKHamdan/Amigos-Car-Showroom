@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sold Cars</title>
+    <link rel="icon" href="../static/images/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/soldCars.css') }}">
+</head>
+{% include 'navbar.html' %}
+<body>
+    <div class="container-fluid mt-4">
+        <h1 class="mt-5">Sold Cars</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th>Date of Purchase</th>
+                        <th>Customer Name</th>
+                        <th>Customer Address</th>
+                        <th>Customer Phone</th>
+                        <th>Price</th>
+                        <th>Sold By</th>
+                        <th>Employee Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for car in soldCars %}
+                    <tr>
+                        <td>{{ car[0] }}</td>
+                        <td>{{ car[1] }}</td>
+                        <td>{{ car[2] }}</td>
+                        <td>{{ car[3] }}</td>
+                        <td>{{ car[4] }}</td>
+                        <td>{{ car[5] }}</td>
+                        <td>${{ car[6] }}</td>
+                        <td>{{ car[7] }}</td>
+                        <td>{{ car[8] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

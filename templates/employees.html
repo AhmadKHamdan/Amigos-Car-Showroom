@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees Management</title>
+    <link rel="icon" href="../static/images/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/employees.css') }}">
+    <script src="{{ url_for('static', filename='js/employees.js') }}" defer></script>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container-fluid mt-4">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="container">
+        <div class="main-title">
+          <h2>Employees</h2>
+          <a href="{{ url_for('addEmployee') }}" class="btn btn-primary">Add an Employee</a>
+        </div>
+        <div class="title">
+            <h2>Sales Employees</h2>
+        </div>
+        <div class="employee-cards">
+            {% for emp in salesEmployees %}
+            <div class="employee-card">
+                <div class="employee-info">
+                    <span class="label">Name:</span>
+                    <span>{{ emp[1] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Address:</span>
+                    <span>{{ emp[2] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Phone:</span>
+                    <span>{{ emp[3] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Date of Birth:</span>
+                    <span>{{ emp[4] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Start Date:</span>
+                    <span>{{ emp[5] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Salary:</span>
+                    <span>{{ emp[6] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Commission Rate:</span>
+                    <span>{{ emp[7] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Status:</span>
+                    <span>{{ emp[8] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Total Sales:</span>
+                    <span>${{ emp[9] }}</span>
+                </div>
+                <div class="btns">
+                    <a href="{{ url_for('updateEmployee', emp_id=emp[0]) }}" class="btn btn-sm btn-warning">Update</a>
+                    {% if emp[8] == 'CURRENT' %}
+                    <a href="{{ url_for('updateEmployeeStatus', emp_id=emp[0], action='delete') }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to mark this employee as former?');">Mark as Former</a>
+                    {% elif emp[8] == 'FORMER' %}
+                    <a href="{{ url_for('updateEmployeeStatus', emp_id=emp[0], action='retrieve') }}" class="btn btn-sm btn-success" onclick="return confirm('Are you sure you want to mark this employee as current?');">Mark as Current</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="title">
+            <h2>Other Service Employees</h2>
+        </div>
+        <div class="employee-cards">
+            {% for emp in otherEmployees %}
+            <div class="employee-card">
+                <div class="employee-info">
+                    <span class="label">Name:</span>
+                    <span>{{ emp[1] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Address:</span>
+                    <span>{{ emp[2] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Phone:</span>
+                    <span>{{ emp[3] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Date of Birth:</span>
+                    <span>{{ emp[4] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Start Date:</span>
+                    <span>{{ emp[5] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Salary:</span>
+                    <span>{{ emp[6] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Service Type:</span>
+                    <span>{{ emp[7] }}</span>
+                </div>
+                <div class="employee-info">
+                    <span class="label">Status:</span>
+                    <span>{{ emp[8] }}</span>
+                </div>
+                <div class="btns">
+                    <a href="{{ url_for('updateEmployee', emp_id=emp[0]) }}" class="btn btn-sm btn-warning">Update</a>
+                    {% if emp[8] == 'CURRENT' %}
+                    <a href="{{ url_for('updateEmployeeStatus', emp_id=emp[0], action='delete') }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to mark this employee as former?');">Mark as Former</a>
+                    {% elif emp[8] == 'FORMER' %}
+                    <a href="{{ url_for('updateEmployeeStatus', emp_id=emp[0], action='retrieve') }}" class="btn btn-sm btn-success" onclick="return confirm('Are you sure you want to mark this employee as current?');">Mark as Current</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

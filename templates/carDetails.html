@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/carDetails.css') }}">
+    <link rel="icon" href="../static/images/logo.png">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container-fluid mt-4">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-danger alert-dismissible">
+            <span>{{ message }}</span>
+            <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';" aria-label="Close">×</button>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="container">
+        <div class="content-box">
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='images/car_images/' + car.image_filename) }}" alt="{{ car.brand }} {{ car.model }}">
+            </div>
+            <div class="details-container">
+                <h1 class="car-title">{{ car.brand }} {{ car.model }} - {{ car.manufacture_year }}</h1>
+                <p><strong>Color:</strong> {{ car.color }}</p>
+                <p><strong>Number of Doors:</strong> {{ car.num_of_doors }}</p>
+                <p><strong>Number of Passengers:</strong> {{ car.num_of_pass }}</p>
+                <p><strong>Petrol Type:</strong> {{ car.petrol_type }}</p>
+                <p><strong>Transmission Type:</strong> {{ car.transmission_type }}</p>
+                <p><strong>Options:</strong> 
+                    Sunroof: {{ 'Yes' if car.sunroof else 'No' }},
+                    Heated Seats: {{ 'Yes' if car.heated_seats else 'No' }},
+                    GPS Navigation: {{ 'Yes' if car.gps_navigation else 'No' }},
+                    Backup Camera: {{ 'Yes' if car.backup_camera else 'No' }}
+                </p>
+                <p><strong>Price:</strong> ${{ car.price }}</p>
+                <div class="btn-container">
+                    <a href="{{ url_for('buyCar') }}" class="btn btn-custom-back">Back to the list</a>
+                    <button class="btn btn-custom-purchase" onclick="showModal()">Purchase</button>
+                </div>
+                <form action="{{ url_for('purchaseCar', car_id=car.id) }}" method="post" id="purchaseForm" class="purchase-form">
+                    <input type="hidden" name="payment_method" id="payment_method">
+                </form>
+            </div>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+
+    <div id="paymentMethodModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Select Payment Method</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="paymentForm">
+                    <div class="mb-3">
+                        <label for="paymentMethod" class="form-label">Payment Method</label>
+                        <select class="form-select" id="paymentMethod" required>
+                            <option value="" disabled selected>Select a payment method</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Finance">Finance</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Proceed with Purchase</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/carDetails.js') }}" defer></script>
+</body>
+</html>

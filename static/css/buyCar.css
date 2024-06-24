@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    margin-top: 100px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    width: calc(100% - 420px);
+    margin: 0 auto;
+}
+
+.filter-section {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    max-width: 400px; 
+    margin: 0 auto 20px auto;
+    width: 500px;
+}
+
+.filter-section h3 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section .form-group {
+    margin-bottom: 15px;
+}
+
+.filter-section label {
+    font-weight: 600;
+    color: #333;
+}
+
+.filter-section .form-control {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease;
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.filter-section .form-control:focus {
+    border-color: #4e4e4e;
+    box-shadow: 0 0 5px rgba(78, 78, 78, 0.25);
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #4e4e4e;
+    border-color: #4e4e4e;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.btn-secondary:hover {
+    background-color: #868686;
+}
+
+.car-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    flex: 1;
+}
+
+.car-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.car-item:hover {
+    transform: translateY(-10px);
+}
+
+.car-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.car-info {
+    padding: 15px;
+}
+
+.car-brand, .car-model, .car-year, .car-price {
+    margin: 5px 0;
+    font-weight: 600;
+    color: #555;
+}
+
+.car-price {
+    color: #4e4e4e;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+@media (max-width: 1440px) {
+    .container {
+        width: calc(100% - 300px);
+    }
+    .car-item {
+        width: calc(33.333% - 20px);
+    }
+}
+
+@media (max-width: 900px) {
+    .container {
+        width: calc(100% - 100px);
+    }
+    .car-item {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 760px) {
+    .container {
+        width: calc(100% - 50px);
+    }
+    .car-item {
+        width: calc(100% - 20px);
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        width: 100%;
+    }
+    .car-item {
+        width: 100%;
+    }
+
+    .filter-section {
+        max-width: 90%; 
+        margin: 0 auto 20px auto;
+    }
+}
