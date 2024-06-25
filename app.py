@@ -872,9 +872,6 @@ def purchaseCar(car_id):
     # Update vehicle status to SOLD
     cursor.execute("UPDATE VEHICLES SET STATUS='SOLD' WHERE CAR_ID=%s", (car_id,))
 
-    cursor.execute("SELECT m.PRICE FROM VEHICLES v JOIN VEHICLE_MODELS m ON v.MODEL_ID = m.MODEL_ID WHERE v.CAR_ID = %s", (car_id,))
-    car = cursor.fetchone()
-
     DATE_OF_PURCHASE = datetime.datetime.today().strftime("%Y-%m-%d")
 
     # Fetch a random EMP_ID from SALES_EMP
